@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ student.name }} (Student)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Student Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('student_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('student_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('student_courses') }}">Courses</a></li>
+                    <li><a href="{{ url_for('student_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('student_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <h2>Student Dashboard</h2>
+                <p>Welcome, {{ student.name }} ({{ student.student_id }})</p>
+                <p>Course: {{ student.course }} | Semester: {{ student.semester }}</p>
+                <p>Email: {{ student.email }}</p>
+                
+                <div class="quick-links">
+                    <a href="{{ url_for('student_profile') }}" class="quick-link">Profile</a>
+                    <a href="{{ url_for('student_attendance') }}" class="quick-link">Attendance</a>
+                    <a href="{{ url_for('student_courses') }}" class="quick-link">Courses</a>
+                    <a href="{{ url_for('student_fees') }}" class="quick-link">Fees</a>
+                    <a href="{{ url_for('student_results') }}" class="quick-link">Results</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

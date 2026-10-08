@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Course Enrollment - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ username }} (Admin)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Admin Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('admin_students') }}">Students</a></li>
+                    <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
+                    <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
+                    <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('admin_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('admin_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <div class="page-header">
+                    <h2>Student Course Enrollment</h2>
+                    <a href="{{ url_for('admin_add_student_course') }}" class="btn btn-primary">Enroll Student in Course</a>
+                </div>
+                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Student Name</th>
+                                <th>Course ID</th>
+                                <th>Course Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if student_courses %}
+                            {% for sc in student_courses %}
+                            <tr>
+                                <td>{{ sc.student_id }}</td>
+                                <td>
+                                    {% for s in students %}
+                                        {% if s.student_id == sc.student_id %}
+                                            {{ s.name }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>{{ sc.course_id }}</td>
+                                <td>
+                                    {% for c in courses %}
+                                        {% if c.course_id == sc.course_id %}
+                                            {{ c.course_name }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin_delete_student_course', student_id=sc.student_id, course_id=sc.course_id) }}" class="btn btn-small btn-delete" onclick="return confirm('Remove this enrollment?')">Remove</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 30px;">No student course enrollments found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

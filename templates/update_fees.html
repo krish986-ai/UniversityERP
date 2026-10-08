@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Fees - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ username }} (Admin)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Admin Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('admin_students') }}">Students</a></li>
+                    <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
+                    <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
+                    <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('admin_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('admin_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <div class="page-header">
+                    <h2>Update Fees for {{ student.name }} ({{ student.student_id }})</h2>
+                    <a href="{{ url_for('admin_fees') }}" class="btn btn-secondary">Back to Fees</a>
+                </div>
+                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="form-container">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="total_fee">Total Fee</label>
+                            <input type="number" id="total_fee" name="total_fee" value="{{ fee_record.total_fee }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="paid_fee">Paid Fee</label>
+                            <input type="number" id="paid_fee" name="paid_fee" value="{{ fee_record.paid_fee }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="due_fee">Due Fee</label>
+                            <input type="number" id="due_fee" name="due_fee" value="{{ fee_record.due_fee }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <input type="text" id="status" name="status" value="{{ fee_record.status }}" readonly>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Fee</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

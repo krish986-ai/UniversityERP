@@ -1,0 +1,5 @@
+course_id,course_name,program,semester,faculty_id
+C001,Operating Systems,AI,4,F002
+C002,Machine Learning,AI,3,F003
+C003,Computer Networks,AI,3,F001
+C004,Database Management,AI,3,F001

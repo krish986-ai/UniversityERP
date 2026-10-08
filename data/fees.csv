@@ -1,0 +1,7 @@
+student_id,total_fee,paid_fee,due_fee,status
+ST001,100000,95000,5000,Pending
+ST002,100000,100000,0,Paid
+ST003,100000,50000,50000,Pending
+ST004,100000,100000,0,Paid
+ST005,100000,0,100000,Pending
+ST006,100000,0,100000,Pending

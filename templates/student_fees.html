@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fees - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ student.name }} (Student)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Student Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('student_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('student_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('student_courses') }}">Courses</a></li>
+                    <li><a href="{{ url_for('student_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('student_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <h2>My Fees</h2>
+                
+                {% if fee_record %}
+                <div class="fees-card">
+                    <div class="fees-field">
+                        <label>Total Fee:</label>
+                        <span>{{ fee_record.total_fee }}</span>
+                    </div>
+                    <div class="fees-field">
+                        <label>Paid Fee:</label>
+                        <span>{{ fee_record.paid_fee }}</span>
+                    </div>
+                    <div class="fees-field">
+                        <label>Due Fee:</label>
+                        <span>{{ fee_record.due_fee }}</span>
+                    </div>
+                    <div class="fees-field">
+                        <label>Status:</label>
+                        <span class="status-{{ fee_record.status|lower }}">{{ fee_record.status }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p>No fee information available.</p>
+                {% endif %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>

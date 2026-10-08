@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ username }} (Admin)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Admin Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('admin_students') }}">Students</a></li>
+                    <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
+                    <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
+                    <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('admin_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('admin_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <div class="page-header">
+                    <h2>Edit Subject / Course</h2>
+                    <a href="{{ url_for('admin_courses') }}" class="btn btn-secondary">Back to Subject / Course Assignment</a>
+                </div>
+                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="form-container">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="course_id">Course ID</label>
+                            <input type="text" id="course_id" name="course_id" value="{{ course.course_id }}" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course_name">Course Name</label>
+                            <input type="text" id="course_name" name="course_name" value="{{ course.course_name }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="faculty">Faculty</label>
+                            <select id="faculty" name="faculty" required>
+                                {% for f in faculty_list %}
+                                <option value="{{ f.faculty_id }}" {% if course.faculty == f.faculty_id %}selected{% endif %}>{{ f.name }} ({{ f.faculty_id }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <input type="number" id="semester" name="semester" value="{{ course.semester }}" min="1" max="8" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Course</button>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

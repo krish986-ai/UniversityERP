@@ -1,0 +1,13 @@
+username,password,role,user_id
+admin,admin123,Admin,A001
+sharma,1234,Faculty,F001
+kumar,1234,Faculty,F002
+singh,1234,Faculty,F003
+patel,1234,Faculty,F004
+rahul,1234,Student,ST001
+aman,1234,Student,ST002
+priya,1234,Student,ST003
+neha,1234,Student,ST004
+newstudent,1234,Student,ST005
+newfaculty,1234,Faculty,F005
+teststudent,1234,Student,ST006

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ student.name }} (Student)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Student Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('student_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('student_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('student_courses') }}">Courses</a></li>
+                    <li><a href="{{ url_for('student_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('student_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <h2>Student Profile</h2>
+                
+                <div class="profile-card">
+                    <div class="profile-field">
+                        <label>Student ID:</label>
+                        <span>{{ student.student_id }}</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Name:</label>
+                        <span>{{ student.name }}</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email:</label>
+                        <span>{{ student.email }}</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Course:</label>
+                        <span>{{ student.course }}</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Semester:</label>
+                        <span>{{ student.semester }}</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
