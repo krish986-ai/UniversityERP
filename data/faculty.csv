@@ -1,6 +1,6 @@
-faculty_id,name,email,department
-F001,Dr. Sharma,sharma@gmail.com,AI
-F002,Mr. Kumar,kumar@gmail.com,CSE
-F003,Dr. Singh,singh@gmail.com,AI
-F004,Ms. Patel,patel@gmail.com,CSE
-F005,New Faculty,newfaculty@gmail.com,CSE
+faculty_id,name,email,department_id
+F001,Dr. Sharma,sharma@gmail.com,D001
+F002,Mr. Kumar,kumar@gmail.com,D002
+F003,Dr. Singh,singh@gmail.com,D001
+F004,Ms. Patel,patel@gmail.com,D002
+F005,New Faculty,newfaculty@gmail.com,D002

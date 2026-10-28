@@ -70,17 +70,19 @@ This project is designed as a learning tool for beginner-level computer science/
 
 3. Login with demo credentials:
 
-| Role | Username | Password |
-|------|----------|----------|
-| Admin | admin | admin123 |
-| Faculty | sharma | 1234 |
-| Faculty | kumar | 1234 |
-| Faculty | singh | 1234 |
-| Faculty | patel | 1234 |
-| Student | rahul | 1234 |
-| Student | aman | 1234 |
-| Student | priya | 1234 |
-| Student | neha | 1234 |
+| Role | Username | Password | Access Details |
+|------|----------|----------|----------------|
+| Admin | admin | admin123 | Full Institutional Master Access |
+| HOD (AI) | sharma_hod | 1234 | Head of Artificial Intelligence Dept |
+| HOD (CSE) | kumar_hod | 1234 | Head of Computer Science Eng. Dept |
+| Faculty | sharma | 1234 | AI Department Faculty |
+| Faculty | kumar | 1234 | CSE Department Faculty |
+| Faculty | singh | 1234 | AI Department Faculty |
+| Faculty | patel | 1234 | CSE Department Faculty |
+| Student | rahul | 1234 | AI Student (Semester 3) |
+| Student | aman | 1234 | CSE Student (Semester 3) |
+| Student | priya | 1234 | AI Student (Semester 3) |
+| Student | neha | 1234 | CSE Student (Semester 3) |
 
 ## Folder Structure
 

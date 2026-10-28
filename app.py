@@ -84,6 +84,8 @@ def login():
                 return redirect(url_for('faculty_dashboard'))
             elif user['role'] == 'Student':
                 return redirect(url_for('student_dashboard'))
+            elif user['role'] == 'HOD':
+                return redirect(url_for('hod_dashboard'))
         else:
             flash('Invalid username or password')
     
@@ -108,7 +110,8 @@ def admin_students():
     if session.get('role') != 'Admin':
         return redirect(url_for('login'))
     students = read_csv('students.csv')
-    return render_template('students.html', students=students)
+    departments = read_csv('departments.csv')
+    return render_template('students.html', students=students, departments=departments)
 
 @app.route('/admin/students/add', methods=['GET', 'POST'])
 def add_student():
@@ -188,7 +191,8 @@ def admin_faculty():
     if session.get('role') != 'Admin':
         return redirect(url_for('login'))
     faculty = read_csv('faculty.csv')
-    return render_template('faculty.html', faculty=faculty)
+    departments = read_csv('departments.csv')
+    return render_template('faculty.html', faculty=faculty, departments=departments)
 
 @app.route('/admin/faculty/add', methods=['GET', 'POST'])
 def add_faculty():
@@ -198,15 +202,15 @@ def add_faculty():
         faculty_id = get_next_id('F', 'faculty.csv', 'faculty_id')
         name = request.form['name']
         email = request.form['email']
-        department = request.form['department']
+        department_id = request.form['department']
         
         new_faculty = {
             'faculty_id': faculty_id,
             'name': name,
             'email': email,
-            'department': department
+            'department_id': department_id
         }
-        append_csv('faculty.csv', new_faculty, ['faculty_id', 'name', 'email', 'department'])
+        append_csv('faculty.csv', new_faculty, ['faculty_id', 'name', 'email', 'department_id'])
         
         # Also create login account
         username = email.split('@')[0]
@@ -222,7 +226,7 @@ def add_faculty():
         flash('Faculty added successfully with login: ' + username + ' / ' + password)
         return redirect(url_for('admin_faculty'))
     faculty_list = read_csv('faculty.csv')
-    departments = sorted(list(set(f['department'] for f in faculty_list)))
+    departments = read_csv('departments.csv')
     return render_template('add_faculty.html', departments=departments)
 
 @app.route('/admin/faculty/edit/<faculty_id>', methods=['GET', 'POST'])
@@ -241,13 +245,13 @@ def edit_faculty(faculty_id):
             if f['faculty_id'] == faculty_id:
                 f['name'] = request.form['name']
                 f['email'] = request.form['email']
-                f['department'] = request.form['department']
+                f['department_id'] = request.form['department_id']
                 break
-        write_csv('faculty.csv', faculty_list, ['faculty_id', 'name', 'email', 'department'])
+        write_csv('faculty.csv', faculty_list, ['faculty_id', 'name', 'email', 'department_id'])
         flash('Faculty updated successfully')
         return redirect(url_for('admin_faculty'))
     
-    departments = sorted(list(set(f['department'] for f in faculty_list)))
+    departments = read_csv('departments.csv')
     return render_template('edit_faculty.html', faculty=faculty, departments=departments)
 
 @app.route('/admin/faculty/delete/<faculty_id>')
@@ -256,7 +260,7 @@ def delete_faculty(faculty_id):
         return redirect(url_for('login'))
     faculty_list = read_csv('faculty.csv')
     faculty_list = [f for f in faculty_list if f['faculty_id'] != faculty_id]
-    write_csv('faculty.csv', faculty_list, ['faculty_id', 'name', 'email', 'department'])
+    write_csv('faculty.csv', faculty_list, ['faculty_id', 'name', 'email', 'department_id'])
     flash('Faculty deleted successfully')
     return redirect(url_for('admin_faculty'))
 
@@ -266,7 +270,8 @@ def admin_courses():
         return redirect(url_for('login'))
     courses = read_csv('courses.csv')
     faculty_list = read_csv('faculty.csv')
-    return render_template('courses.html', courses=courses, faculty_list=faculty_list)
+    departments = read_csv('departments.csv')
+    return render_template('courses.html', courses=courses, faculty_list=faculty_list, departments=departments)
 
 @app.route('/admin/courses/add', methods=['GET', 'POST'])
 def add_course():
@@ -591,6 +596,68 @@ def add_result():
     courses = read_csv('courses.csv')
     return render_template('add_result.html', students=students, courses=courses)
 
+@app.route('/admin/departments')
+def admin_departments():
+    if session.get('role') != 'Admin':
+        return redirect(url_for('login'))
+    departments = read_csv('departments.csv')
+    faculty_list = read_csv('faculty.csv')
+    return render_template('departments.html', departments=departments, faculty_list=faculty_list)
+
+@app.route('/admin/departments/add', methods=['GET', 'POST'])
+def admin_add_department():
+    if session.get('role') != 'Admin':
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        department_id = get_next_id('D', 'departments.csv', 'department_id')
+        department_name = request.form['department_name']
+        hod_id = request.form.get('hod_id', '')
+        
+        new_department = {
+            'department_id': department_id,
+            'department_name': department_name,
+            'hod_id': hod_id
+        }
+        append_csv('departments.csv', new_department, ['department_id', 'department_name', 'hod_id'])
+        flash('Department added successfully')
+        return redirect(url_for('admin_departments'))
+    faculty_list = read_csv('faculty.csv')
+    return render_template('add_department.html', faculty_list=faculty_list)
+
+@app.route('/admin/departments/edit/<department_id>', methods=['GET', 'POST'])
+def admin_edit_department(department_id):
+    if session.get('role') != 'Admin':
+        return redirect(url_for('login'))
+    departments = read_csv('departments.csv')
+    department = None
+    for d in departments:
+        if d['department_id'] == department_id:
+            department = d
+            break
+    
+    if request.method == 'POST':
+        for d in departments:
+            if d['department_id'] == department_id:
+                d['department_name'] = request.form['department_name']
+                d['hod_id'] = request.form.get('hod_id', '')
+                break
+        write_csv('departments.csv', departments, ['department_id', 'department_name', 'hod_id'])
+        flash('Department updated successfully')
+        return redirect(url_for('admin_departments'))
+    
+    faculty_list = read_csv('faculty.csv')
+    return render_template('edit_department.html', department=department, faculty_list=faculty_list)
+
+@app.route('/admin/departments/delete/<department_id>')
+def admin_delete_department(department_id):
+    if session.get('role') != 'Admin':
+        return redirect(url_for('login'))
+    departments = read_csv('departments.csv')
+    departments = [d for d in departments if d['department_id'] != department_id]
+    write_csv('departments.csv', departments, ['department_id', 'department_name', 'hod_id'])
+    flash('Department deleted successfully')
+    return redirect(url_for('admin_departments'))
+
 @app.route('/faculty')
 def faculty_dashboard():
     if session.get('role') != 'Faculty':
@@ -735,6 +802,86 @@ def faculty_marks(course_id):
         return redirect(url_for('faculty_marks', course_id=course_id))
     
     return render_template('faculty_marks.html', faculty=faculty_info, course=course, students=course_students, results=results)
+
+@app.route('/hod')
+def hod_dashboard():
+    if session.get('role') != 'HOD':
+        return redirect(url_for('login'))
+    user_id = session.get('user_id')
+    departments = read_csv('departments.csv')
+    department = None
+    for d in departments:
+        if d['hod_id'] == user_id:
+            department = d
+            break
+    faculty_list = read_csv('faculty.csv')
+    hod_faculty = None
+    for f in faculty_list:
+        if f['faculty_id'] == user_id:
+            hod_faculty = f
+            break
+    dept_faculty = [f for f in faculty_list if f['department_id'] == department['department_id']] if department else []
+    students = read_csv('students.csv')
+    dept_students = [s for s in students if s['department_id'] == department['department_id']] if department else []
+    courses = read_csv('courses.csv')
+    dept_courses = [c for c in courses if c['department_id'] == department['department_id']] if department else []
+    return render_template('hod_dashboard.html', hod=hod_faculty, department=department, faculty=dept_faculty, students=dept_students, courses=dept_courses)
+
+@app.route('/hod/faculty')
+def hod_faculty():
+    if session.get('role') != 'HOD':
+        return redirect(url_for('login'))
+    user_id = session.get('user_id')
+    departments = read_csv('departments.csv')
+    department = None
+    for d in departments:
+        if d['hod_id'] == user_id:
+            department = d
+            break
+    faculty_list = read_csv('faculty.csv')
+    hod_faculty = None
+    for f in faculty_list:
+        if f['faculty_id'] == user_id:
+            hod_faculty = f
+            break
+    dept_faculty = [f for f in faculty_list if f['department_id'] == department['department_id']] if department else []
+    return render_template('hod_faculty.html', hod=hod_faculty, department=department, faculty=dept_faculty)
+
+@app.route('/hod/students')
+def hod_students():
+    if session.get('role') != 'HOD':
+        return redirect(url_for('login'))
+    user_id = session.get('user_id')
+    departments = read_csv('departments.csv')
+    department = None
+    for d in departments:
+        if d['hod_id'] == user_id:
+            department = d
+            break
+    students = read_csv('students.csv')
+    dept_students = [s for s in students if s['department_id'] == department['department_id']] if department else []
+    return render_template('hod_students.html', hod=None, department=department, students=dept_students)
+
+@app.route('/hod/courses')
+def hod_courses():
+    if session.get('role') != 'HOD':
+        return redirect(url_for('login'))
+    user_id = session.get('user_id')
+    departments = read_csv('departments.csv')
+    department = None
+    for d in departments:
+        if d['hod_id'] == user_id:
+            department = d
+            break
+    courses = read_csv('courses.csv')
+    dept_courses = [c for c in courses if c['department_id'] == department['department_id']] if department else []
+    faculty_list = read_csv('faculty.csv')
+    hod_faculty = None
+    for f in faculty_list:
+        if f['faculty_id'] == user_id:
+            hod_faculty = f
+            break
+    return render_template('hod_courses.html', hod=hod_faculty, department=department, courses=dept_courses, faculty_list=faculty_list)
 
 @app.route('/student')
 def student_dashboard():

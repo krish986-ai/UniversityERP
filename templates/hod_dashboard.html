@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Dashboard - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ hod.name }} (HOD - {{ department.department_name }})</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>HOD Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('hod_dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('hod_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('hod_students') }}">Students</a></li>
+                    <li><a href="{{ url_for('hod_courses') }}">Courses</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <h2>HOD Dashboard - {{ department.department_name }}</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Faculty</h3>
+                        <p class="stat-number">{{ faculty|length }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Students</h3>
+                        <p class="stat-number">{{ students|length }}</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Courses</h3>
+                        <p class="stat-number">{{ courses|length }}</p>
+                    </div>
+                </div>
+                
+                <div class="quick-links">
+                    <a href="{{ url_for('hod_faculty') }}" class="quick-link">Manage Faculty</a>
+                    <a href="{{ url_for('hod_students') }}" class="quick-link">Manage Students</a>
+                    <a href="{{ url_for('hod_courses') }}" class="quick-link">Manage Courses</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

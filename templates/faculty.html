@@ -22,6 +22,7 @@
                 <ul>
                     <li><a href="{{ url_for('admin_students') }}">Students</a></li>
                     <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('admin_departments') }}">Departments</a></li>
                     <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
                     <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
                     <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
@@ -63,7 +64,13 @@
                                 <td>{{ f.faculty_id }}</td>
                                 <td>{{ f.name }}</td>
                                 <td>{{ f.email }}</td>
-                                <td>{{ f.department }}</td>
+                                <td>
+                                    {% for d in departments %}
+                                        {% if d.department_id == f.department_id %}
+                                            {{ d.department_name }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
                                 <td>
                                     <a href="{{ url_for('edit_faculty', faculty_id=f.faculty_id) }}" class="btn btn-small btn-edit">Edit</a>
                                     <a href="{{ url_for('delete_faculty', faculty_id=f.faculty_id) }}" class="btn btn-small btn-delete" onclick="return confirm('Delete this faculty?')">Delete</a>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments - University ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="header">
+            <h1>UNIVERSITY ERP</h1>
+            <div class="user-info">
+                <span>Welcome, {{ username }} (Admin)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <nav class="sidebar">
+                <h3>Admin Menu</h3>
+                <ul>
+                    <li><a href="{{ url_for('admin_students') }}">Students</a></li>
+                    <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
+                    <li><a href="{{ url_for('admin_departments') }}">Departments</a></li>
+                    <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
+                    <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
+                    <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
+                    <li><a href="{{ url_for('admin_fees') }}">Fees</a></li>
+                    <li><a href="{{ url_for('admin_results') }}">Results</a></li>
+                </ul>
+            </nav>
+            
+            <main class="main-content">
+                <div class="page-header">
+                    <h2>Departments</h2>
+                    <a href="{{ url_for('admin_add_department') }}" class="btn btn-primary">Add Department</a>
+                </div>
+                
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Department ID</th>
+                                <th>Department Name</th>
+                                <th>HOD</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if departments %}
+                            {% for d in departments %}
+                            <tr>
+                                <td>{{ d.department_id }}</td>
+                                <td>{{ d.department_name }}</td>
+                                <td>
+                                    {% for f in faculty_list %}
+                                        {% if f.faculty_id == d.hod_id %}
+                                            {{ f.name }} ({{ f.faculty_id }})
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin_edit_department', department_id=d.department_id) }}" class="btn btn-small btn-edit">Edit</a>
+                                    <a href="{{ url_for('admin_delete_department', department_id=d.department_id) }}" class="btn btn-small btn-delete" onclick="return confirm('Delete this department?')">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 30px;">No departments found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

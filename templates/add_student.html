@@ -22,7 +22,9 @@
                 <ul>
                     <li><a href="{{ url_for('admin_students') }}">Students</a></li>
                     <li><a href="{{ url_for('admin_faculty') }}">Faculty</a></li>
-                    <li><a href="{{ url_for('admin_courses') }}">Courses</a></li>
+                    <li><a href="{{ url_for('admin_departments') }}">Departments</a></li>
+                    <li><a href="{{ url_for('admin_courses') }}">Subject / Course Assignment</a></li>
+                    <li><a href="{{ url_for('admin_student_courses') }}">Student Course Enrollment</a></li>
                     <li><a href="{{ url_for('admin_attendance') }}">Attendance</a></li>
                     <li><a href="{{ url_for('admin_fees') }}">Fees</a></li>
                     <li><a href="{{ url_for('admin_results') }}">Results</a></li>
@@ -58,11 +60,11 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="course">Course</label>
-                            <select id="course" name="course" required>
-                                <option value="">Select Course</option>
-                                {% for c in courses %}
-                                <option value="{{ c }}">{{ c }}</option>
+                            <label for="department_id">Department</label>
+                            <select id="department_id" name="course" required>
+                                <option value="">Select Department</option>
+                                {% for d in departments %}
+                                <option value="{{ d.department_id }}">{{ d.department_name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
